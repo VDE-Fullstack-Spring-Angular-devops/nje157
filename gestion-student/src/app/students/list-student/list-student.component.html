@@ -1,0 +1,52 @@
+<div class="content">
+  <div class="content-button-add-etudiant">
+    <h3>Etudiants</h3>
+    @if (userRole == "admin"){
+      <span class="button-add-student">
+      <button (click)="addStudent()" >+ Ajouter un étudiant</button>
+      </span>
+    }
+  </div>
+  <div class="content-student-list">
+    <ul>
+      @for (student of students; track student.id){
+        <li>
+          <div>
+            <span><i class="fas fa-portrait"></i></span>
+            <span>{{student.firstname}}</span>
+            <span>{{student.lastname}}</span>
+          </div>
+          <div>
+            <a class="student-details" [routerLink]="['student', student.id, 'profile']">Détails</a>
+          </div>
+          @if (userRole == "admin"){
+            <div>
+              <span class="delete" (click)="deleteStudent(student.id)"><i class="fas fa-trash-alt"></i></span>
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  </div>
+</div>
+
+
+<ng-template #templeFormAddStudent>
+  <h3> Ajoutez un etudiant</h3>
+  <form>
+    <div>
+      <label for="firstname"></label>
+      <input id="firstname" type="text">
+    </div>
+    <div>
+      <label for="lastname"></label>
+      <input id="lastname" type="text">
+    </div>
+    <div>
+      <label for="email"></label>
+      <input id="email" type="text">
+    </div>
+  </form>
+</ng-template>
+
+

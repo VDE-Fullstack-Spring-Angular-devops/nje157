@@ -1,0 +1,10 @@
+<div class="header">
+  <h1 routerLink="home"><i class="fas fa-university"></i> Gestion-Etudiants</h1>
+  <div class="login">
+    @if(isLogged$ | async){
+      <span (click)="deconnexion()">Deconnexion</span>
+    } @else {
+      <span >Connexion</span>
+    }
+  </div>
+</div>

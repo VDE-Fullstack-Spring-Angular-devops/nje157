@@ -1,0 +1,20 @@
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  font-size: 16px;
+  background-color: #f7d794;
+}
+
+h1{
+  cursor: pointer;
+}
+.login{
+  margin-right: 15px;
+  cursor: pointer;
+  span{
+    padding: 5px;
+  }
+}

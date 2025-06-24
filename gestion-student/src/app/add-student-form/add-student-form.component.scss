@@ -1,0 +1,55 @@
+.content{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+h3{
+  margin-bottom: 30px;
+}
+form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 500px;
+  box-shadow: -5px 10px 100px -3px rgba(0,0,0,0.1);
+  background-color: white;
+}
+
+.content-input{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  width: 70%;
+}
+input{
+  padding: 5px;
+  border: 1px solid #192a56;
+  cursor: pointer;
+}
+
+.content-button{
+  display: flex;
+  width: 70%;
+
+  margin: 10px;
+}
+.button.add-student{
+  border: 0;
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  background: #192a56;
+  border-radius: 5px;
+  color: white;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.error{
+  color: red;
+  padding: 5px;
+}
