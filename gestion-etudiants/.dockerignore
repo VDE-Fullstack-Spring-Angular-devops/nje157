@@ -1,0 +1,5 @@
+./src/main/docker/mysql-data/mysql.sock
+target/
+*.log
+*.iml
+.idea/
