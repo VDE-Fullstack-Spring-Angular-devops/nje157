@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+
+   mysql:
+      image: mysql:8.0.41
+      container_name: etudiant-database
+      restart: always
+      environment:
+         MYSQL_ROOT_PASSWORD: root
+         MYSQL_DATABASE: etudiantdb
+      ports:
+         - "3307:3306"
+      volumes:
+         - .gestion-etudiants/src/main/docker/mysql-data:/var/lib/mysql
+         - .gestion-etudiants/src/main/docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+   backend:
+      build: ./gestion-etudiants
+      restart: always
+      ports:
+         - 9000:9000
+
+   frontend:
+      build: ./gestion-student
+      ports:
+         - 42000:42000
+
+   #volumes:
+   
