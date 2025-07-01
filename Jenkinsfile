@@ -1,3 +1,22 @@
+
+pipeline{
+    agent any
+
+    environment {
+        AUTHOR_NAME = "OUMAR"
+    }
+
+    stages{
+        stage("build de l'application ..."){
+           echo "build de l'application"
+        }
+
+    }
+}
+
+
+
+/*
 node {
     docker.image('maven:3-alpine').inside('-v $HOME/.m2:/root/.m2') {
         stage('Pull repository') {
@@ -42,7 +61,10 @@ node {
                 sh 'ng build'
             }
             stage('Stash dist folder') {
-                stash includes: 'dist/**/*', name: 'distFolder'
+                stash includes: 'dist */
+/** /*
+*/
+/*', name: 'distFolder'
             }
         }
     }
@@ -61,4 +83,4 @@ node {
         }
 
     }
-}
+} */
