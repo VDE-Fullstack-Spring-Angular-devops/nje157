@@ -1,86 +1,62 @@
-
-pipeline{
+pipeline {
     agent any
 
     environment {
-        AUTHOR_NAME = "OUMAR"
+        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // ID Jenkins
+        DOCKER_HUB_USER = 'ton_user_dockerhub'
+        BACK_IMAGE_NAME = "${DOCKER_HUB_USER}/gestion-etudiant-back"
+        FRONT_IMAGE_NAME = "${DOCKER_HUB_USER}/gestion-etudiant-front"
+        IMAGE_TAG = 'latest' // ou utilisez "${env.BUILD_NUMBER}" ou un tag Git
     }
 
-    stages{
-        stage("build de l'application ..."){
-           echo "build de l'application"
-        }
-
-    }
-}
-
-
-
-/*
-node {
-    docker.image('maven:3-alpine').inside('-v $HOME/.m2:/root/.m2') {
-        stage('Pull repository') {
-            checkout scm
-        }
-        stage('Build') {
-            sh 'mvn -B -DskipTests clean package'
-        }
-        stage('Test') {
-            sh 'mvn test'
-        }
-        stage('Stash jar file') {
-            stash includes: 'target/server-0.0.1-SNAPSHOT.jar', name: 'binary'
-        }
-    }
-}
-node {
-    stage('Unstash jar file') {
-        unstash 'binary'
-    }
-    stage('Build and push Docker image') {
-        def customImage = docker.build "(yatassaye/backend-etudiant))/basic-server"
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            customImage.push("$BUILD_NUMBER")
-            customImage.push("latest")
-        }
-    }
-}
-
-
-node {
-    stage('Build ng image') {
-        def customNodeImage = docker.build "node-with-ng"
-        customNodeImage.inside {
-            stage('Pull repository') {
+    stages {
+        stage('Checkout') {
+            steps {
                 checkout scm
             }
-            stage('Install npm') {
-                sh 'npm install'
+        }
+
+        stage('Build Backend Image') {
+            steps {
+                script {
+                    docker.build("${BACK_IMAGE_NAME}:${IMAGE_TAG}", ".")
+                }
             }
-            stage('Build') {
-                sh 'ng build'
+        }
+
+        stage('Build Frontend Image') {
+            steps {
+                script {
+                    docker.build("${FRONT_IMAGE_NAME}:${IMAGE_TAG}", "frontend")
+                }
             }
-            stage('Stash dist folder') {
-                stash includes: 'dist */
-/** /*
-*/
-/*', name: 'distFolder'
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: "${DOCKER_HUB_CREDENTIALS}",
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                script {
+                    docker.image("${BACK_IMAGE_NAME}:${IMAGE_TAG}").push()
+                    docker.image("${FRONT_IMAGE_NAME}:${IMAGE_TAG}").push()
+                }
+            }
+        }
+
+        stage('Logout') {
+            steps {
+                sh 'docker logout'
             }
         }
     }
 }
-node {
-    stage('Unstash dist folder') {
-        unstash 'distFolder'
-    }
-    stage('Build Docker image') {
-        def customImage = docker.build("(yatassaye/frontend-etudiant)/basic-client", "-f ./dockerfiles/nginx/Dockerfile .")
-        stage('Push Docker image') {
-            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                customImage.push("$BUILD_NUMBER")
-                customImage.push("latest")
-            }
-        }
-
-    }
-} */
