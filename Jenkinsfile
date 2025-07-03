@@ -19,7 +19,7 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 script {
-                    docker.build("${BACK_IMAGE_NAME}:${IMAGE_TAG}", "./gestion-etudiants/.")
+                    docker.build("${BACK_IMAGE_NAME}:${IMAGE_TAG}", "./gestion-etudiants .")
                 }
             }
         }
@@ -27,7 +27,7 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 script {
-                    docker.build("${FRONT_IMAGE_NAME}:${IMAGE_TAG}", "./gestion-student/.")
+                    docker.build("${FRONT_IMAGE_NAME}:${IMAGE_TAG}", "./gestion-student .")
                 }
             }
         }
