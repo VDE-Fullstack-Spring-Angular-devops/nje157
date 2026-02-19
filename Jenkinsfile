@@ -2,14 +2,17 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // ID Jenkins
+        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
         DOCKER_HUB_USER = 'yatassaye'
+
         BACK_IMAGE_NAME = "${DOCKER_HUB_USER}/gestion-etudiant-back"
         FRONT_IMAGE_NAME = "${DOCKER_HUB_USER}/gestion-etudiant-front"
-        IMAGE_TAG = 'latest' // ou utilisez "${env.BUILD_NUMBER}" ou un tag Git
+
+        IMAGE_TAG = "latest"
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -19,7 +22,7 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 script {
-                    docker.build("${BACK_IMAGE_NAME}:${IMAGE_TAG}", "./gestion-etudiants .")
+                    docker.build("${BACK_IMAGE_NAME}:${IMAGE_TAG}", "gestion-etudiants")
                 }
             }
         }
@@ -27,7 +30,7 @@ pipeline {
         stage('Build Frontend Image') {
             steps {
                 script {
-                    docker.build("${FRONT_IMAGE_NAME}:${IMAGE_TAG}", "./gestion-student .")
+                    docker.build("${FRONT_IMAGE_NAME}:${IMAGE_TAG}", "gestion-student")
                 }
             }
         }
