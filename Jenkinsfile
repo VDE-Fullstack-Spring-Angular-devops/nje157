@@ -21,17 +21,17 @@ pipeline {
 
         stage('Build Backend Image') {
             steps {
-                script {
-                    docker.build("${BACK_IMAGE_NAME}:${IMAGE_TAG}", "gestion-etudiants")
-                }
+                sh """
+                    docker build -t ${BACK_IMAGE_NAME}:${IMAGE_TAG} gestion-etudiants
+                """
             }
         }
 
         stage('Build Frontend Image') {
             steps {
-                script {
-                    docker.build("${FRONT_IMAGE_NAME}:${IMAGE_TAG}", "gestion-student")
-                }
+                sh """
+                    docker build -t ${FRONT_IMAGE_NAME}:${IMAGE_TAG} gestion-student
+                """
             }
         }
 
@@ -49,10 +49,10 @@ pipeline {
 
         stage('Push Images') {
             steps {
-                script {
-                    docker.image("${BACK_IMAGE_NAME}:${IMAGE_TAG}").push()
-                    docker.image("${FRONT_IMAGE_NAME}:${IMAGE_TAG}").push()
-                }
+                sh """
+                    docker push ${BACK_IMAGE_NAME}:${IMAGE_TAG}
+                    docker push ${FRONT_IMAGE_NAME}:${IMAGE_TAG}
+                """
             }
         }
 
