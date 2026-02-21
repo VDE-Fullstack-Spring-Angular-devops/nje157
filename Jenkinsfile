@@ -21,7 +21,7 @@ pipeline {
 
         stage('Build Backend Image') {
             steps {
-                sh """
+                bat """
                     docker build -t ${BACK_IMAGE_NAME}:${IMAGE_TAG} gestion-etudiants
                 """
             }
@@ -29,7 +29,7 @@ pipeline {
 
         stage('Build Frontend Image') {
             steps {
-                sh """
+                bat """
                     docker build -t ${FRONT_IMAGE_NAME}:${IMAGE_TAG} gestion-student
                 """
             }
@@ -42,14 +42,14 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                    bat 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                 }
             }
         }
 
         stage('Push Images') {
             steps {
-                sh """
+                bat """
                     docker push ${BACK_IMAGE_NAME}:${IMAGE_TAG}
                     docker push ${FRONT_IMAGE_NAME}:${IMAGE_TAG}
                 """
@@ -58,7 +58,7 @@ pipeline {
 
         stage('Logout') {
             steps {
-                sh 'docker logout'
+                bat 'docker logout'
             }
         }
     }
