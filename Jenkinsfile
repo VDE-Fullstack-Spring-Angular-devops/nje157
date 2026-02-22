@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
+        DOCKER_HUB_CREDENTIALS = 'credential-docker'
         DOCKER_HUB_USER = 'yatassaye'
 
         BACK_IMAGE_NAME = "${DOCKER_HUB_USER}/gestion-etudiant-back"
